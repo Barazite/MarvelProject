@@ -17,6 +17,9 @@ class CharacterListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCharacterListBinding.inflate(layoutInflater, container, false)
+
+        viewModel.requestInformation()
+
         return binding.root
     }
 }
