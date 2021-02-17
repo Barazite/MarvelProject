@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit
 class MarvelNetwork {
     lateinit var service: MarvelService
 
-    suspend fun getAllCharacter(): ResponseAllCharactersDataModel{
+    suspend fun getAllCharacters(limit: Int): ResponseAllCharactersDataModel{
         loadRetrofit()
-        return service.getAllCharacter()
+        return service.getAllCharacters(limit)
     }
 
     private fun loadRetrofit(){
@@ -55,6 +55,4 @@ class MarvelNetwork {
         }
        return builder.build()
     }
-
-
 }
