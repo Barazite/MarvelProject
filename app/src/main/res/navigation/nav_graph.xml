@@ -10,5 +10,18 @@
         android:id="@+id/characterListFragment"
         android:name="com.example.marvelproject.presentation.fragments.characterlist.CharacterListFragment"
         android:label="CharacterListFragment"
-        tools:layout="@layout/fragment_character_list"/>
+        tools:layout="@layout/fragment_character_list">
+        <action
+            android:id="@+id/action_characterListFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterDetailFragment"
+        android:name="com.example.marvelproject.presentation.fragments.characterdetail.CharacterDetailFragment"
+        android:label="character_detail_fragment"
+        tools:layout="@layout/character_detail_fragment" >
+        <argument
+            android:name="characterId"
+            app:argType="integer" />
+    </fragment>
 </navigation>
