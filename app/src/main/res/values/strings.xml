@@ -4,6 +4,7 @@
     <string name="nombre_heroe">Nombre de Heroe</string>
 
     <string-array name="fragment_character_list_spinner_array">
+        <item>Selecciona el límite</item>
         <item>20</item>
         <item>40</item>
         <item>60</item>
