@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def keysFile = new Properties()
+keysFile.load(new FileInputStream(rootProject.file("apikeys.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -17,8 +20,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "PRIVATE_KEY", "\"9d06ba8e41abd1a24b3db69ac0cf2b8ddbe78901\""
-        buildConfigField "String", "PUBLIC_KEY", "\"c9950eedcf64d7d05a29fa694826448d\""
+        buildConfigField "String", "PRIVATE_KEY", keysFile['PRIVATE_KEY']
+        buildConfigField "String", "PUBLIC_KEY", keysFile['PUBLIC_KEY']
     }
 
     buildTypes {
