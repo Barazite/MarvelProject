@@ -42,21 +42,21 @@ data class Comics(
 data class Events(
     val available: Int,
     val collectionURI: String,
-    val items: List<ItemX>,
+    val items: List<Item>,
     val returned: Int
 )
 
 data class Series(
     val available: Int,
     val collectionURI: String,
-    val items: List<ItemXX>,
+    val items: List<Item>,
     val returned: Int
 )
 
 data class Stories(
     val available: Int,
     val collectionURI: String,
-    val items: List<ItemXXX>,
+    val items: List<Item>,
     val returned: Int
 )
 
@@ -75,18 +75,3 @@ data class Item(
     val resourceURI: String
 )
 
-data class ItemX(
-    val name: String,
-    val resourceURI: String
-)
-
-data class ItemXX(
-    val name: String,
-    val resourceURI: String
-)
-
-data class ItemXXX(
-    val name: String,
-    val resourceURI: String,
-    val type: String
-)
