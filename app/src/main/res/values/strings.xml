@@ -2,6 +2,9 @@
     <string name="app_name">MarvelProject</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="nombre_heroe">Nombre de Heroe</string>
+    <string name="comics_tab">Comics</string>
+    <string name="series_tab">Series</string>
+    <string name="stories_tab">Stories</string>
 
     <string-array name="fragment_character_list_spinner_array">
         <item>Selecciona el límite</item>

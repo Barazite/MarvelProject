@@ -1,16 +1,21 @@
 package com.example.marvelproject.presentation.fragments.characterdetail
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.example.marvelproject.R
 import com.example.marvelproject.base.BaseExtraData
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class CharacterDetailFragment : Fragment() {
 
@@ -69,12 +74,24 @@ class CharacterDetailFragment : Fragment() {
 
             character.urls.firstOrNull()?.let{link ->
                 binding.myWebView.loadUrl(link.url.replace("http", "https"))
+                binding.myWebView.webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                        view.loadUrl(url)
+                        return false
+                    }
+                }
             }
-
+            // ViewPager2
+            binding.vpCharacterDetail.adapter = CharacterDetailViewPagerAdapter(this, character)
+            //TabLayout
+            TabLayoutMediator(binding.tabCharacterDetail, binding.vpCharacterDetail) { tab, position ->
+                tab.text = when(position) {
+                    0 -> getString(R.string.comics_tab)
+                    1 -> getString(R.string.series_tab)
+                    2 -> getString(R.string.stories_tab)
+                    else -> ""
+                }
+            }.attach()
         }
-
-
     }
-
-
 }

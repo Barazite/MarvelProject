@@ -38,7 +38,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCharacterDetailName"/>
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabCharacterDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCharacterDetailDescription" />
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpCharacterDetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabCharacterDetail" />
     <WebView
+        android:visibility="gone"
         android:id="@+id/myWebView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -46,7 +70,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCharacterDetailDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCharacterDetailDescription" >
+    </WebView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
