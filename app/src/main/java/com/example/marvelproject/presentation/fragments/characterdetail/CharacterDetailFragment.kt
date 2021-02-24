@@ -1,74 +1,46 @@
 package com.example.marvelproject.presentation.fragments.characterdetail
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.marvelproject.R
 import com.example.marvelproject.base.BaseExtraData
+import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class CharacterDetailFragment : Fragment() {
+class CharacterDetailFragment : BaseFragment<CharacterDetailState, CharacterDetailViewModel, CharacterDetailFragmentBinding>() {
 
-    private val viewModel: CharacterDetailViewModel by viewModels()
-    lateinit var binding: CharacterDetailFragmentBinding
+    /**
+     * Base variables
+     */
+
+    override val viewModelClass = CharacterDetailViewModel::class.java
+    private lateinit var vm: CharacterDetailViewModel
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> CharacterDetailFragmentBinding = CharacterDetailFragmentBinding::inflate
     private val args: CharacterDetailFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = CharacterDetailFragmentBinding.inflate(inflater,container, false)
+    /**
+     * Base functions
+     */
 
-
-        viewModel.getState().observe(viewLifecycleOwner, {state ->
-            when(state){
-                is BaseState.Normal ->{
-                    onNormal(state.data as CharacterDetailState)
-                }
-                is BaseState.Error ->{
-                    onError(state.dataError)
-                }
-                is BaseState.Loading ->{
-                    onLoading(state.dataLoading)
-                }
-            }
-        })
-
-        setupView()
-        viewModel.requestInformation(args.characterId)
-
-        return binding.root
+    override fun setupView(viewModel: CharacterDetailViewModel) {
+        vm = viewModel
+        vm.requestInformation(args.characterId)
     }
 
-    private fun setupView() {
+    /**
+     * State management
+     */
 
-    }
-
-    private fun onLoading(dataLoading: BaseExtraData?) {
-
-    }
-
-    private fun onError(dataError: Throwable) {
-        when (dataError){
-            is NoCharacterException ->{
-
-            }
-            else ->{
-
-            }
-        }
-
-    }
-
-    private fun onNormal(characterDetailState: CharacterDetailState) {
-        characterDetailState.character?.let{character ->
+    override fun onNormal(data: CharacterDetailState) {
+        data.character?.let{character ->
             binding.tvCharacterDetailName.text = character.name
             binding.tvCharacterDetailDescription.text = character.description
 
@@ -94,4 +66,20 @@ class CharacterDetailFragment : Fragment() {
             }.attach()
         }
     }
+
+    override fun onLoading(dataLoading: BaseExtraData?) {
+
+    }
+
+    override fun onError(dataError: Throwable) {
+        when (dataError){
+            is NoCharacterException ->{
+
+            }
+            else ->{
+
+            }
+        }
+    }
+
 }
