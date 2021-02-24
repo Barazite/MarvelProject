@@ -5,29 +5,36 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marvelproject.base.BaseState
+import com.example.marvelproject.base.BaseViewModel
 import com.example.marvelproject.data.MarvelRepository
 import kotlinx.coroutines.launch
 
-class CharacterListViewModel: ViewModel() {
+class CharacterListViewModel: BaseViewModel<CharacterListState>() {
 
-    private val state = MutableLiveData<BaseState>()
+    override val defaultState: CharacterListState = CharacterListState()
 
-    fun getState(): LiveData<BaseState> = state
+    override fun onStartFirstTime() {
+        requestInformation()
+    }
 
-
-    fun requestInformation(limit: Int = 20) {
-        state.postValue(BaseState.Loading())
-        viewModelScope.launch {
-            try{
-                val response = MarvelRepository().getAllCharacters(limit)
-                state.postValue(BaseState.Normal(CharacterListState(response)))
-            }catch (e: Exception){
-                state.postValue(BaseState.Error(e))
-            }
+    private fun requestInformation() {
+        updateToLoadingState()
+        checkDataState { state ->
+            executeCoroutines({
+                val response = MarvelRepository().getAllCharacters(state.limit)
+                updateToNormalState(state.copy(characterList = response))
+            }, { error ->
+                updateToErrorState(error)
+            })
         }
     }
 
     fun onActionChangeSpinnerValue(limit: String) {
-        requestInformation(limit.toInt())
+        checkDataState { state ->
+            if(state.limit != limit.toInt()){
+                updateDataState(state.copy(limit = limit.toInt()))
+                requestInformation()
+            }
+        }
     }
 }

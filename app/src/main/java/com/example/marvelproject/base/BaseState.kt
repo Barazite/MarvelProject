@@ -2,11 +2,11 @@ package com.example.marvelproject.base
 
 import java.io.Serializable
 
-sealed class BaseState{
+sealed class BaseState<S>(val data: S): BaseViewState(){
 
-    data class Normal(val data: Serializable) : BaseState()
-    data class Error(val dataError: Throwable) : BaseState()
-    data class Loading(val dataLoading: BaseExtraData? = null) : BaseState()
+    class Normal<S>(data: S) : BaseState<S>(data)
+    class Error<S>(data: S, val dataError: Throwable) : BaseState<S>(data)
+    class Loading<S>(data: S, val dataLoading: BaseExtraData? = null) : BaseState<S>(data)
 
 }
 

@@ -1,54 +1,39 @@
 package com.example.marvelproject.presentation.fragments.characterlist
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.marvelproject.R
 import com.example.marvelproject.base.BaseExtraData
+import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.base.BaseState
+import com.example.marvelproject.base.BaseViewState
 import com.example.marvelproject.databinding.FragmentCharacterListBinding
 
 
-class CharacterListFragment : Fragment() {
+class CharacterListFragment : BaseFragment<CharacterListState, CharacterListViewModel, FragmentCharacterListBinding>() {
 
-    lateinit var binding : FragmentCharacterListBinding
+    /**
+     * Base classes variables
+     */
+    override val viewModelClass = CharacterListViewModel::class.java
+    lateinit var vm: CharacterListViewModel
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCharacterListBinding = FragmentCharacterListBinding::inflate
     lateinit var mAdapter: CharacterListAdapter
 
-    val viewModel: CharacterListViewModel by viewModels()
+    /**
+     * Base class methods
+     */
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCharacterListBinding.inflate(layoutInflater, container, false)
+    override fun setupView(viewModel: CharacterListViewModel) {
+         vm = viewModel
 
-        viewModel.getState().observe(viewLifecycleOwner, {state ->
-            when(state){
-                is BaseState.Normal ->{
-                    onNormal(state.data as CharacterListState)
-                }
-                is BaseState.Error ->{
-                    onError(state.dataError)
-                }
-                is BaseState.Loading ->{
-                    onLoading(state.dataLoading)
-                }
-            }
-        })
-
-        setupView()
-        viewModel.requestInformation()
-
-        return binding.root
-    }
-
-    private fun setupView() {
         //Setup Recycler View
         mAdapter = CharacterListAdapter(listOf(), requireActivity()){ character ->
             findNavController().navigate(CharacterListFragmentDirections.actionCharacterListFragmentToCharacterDetailFragment(character.id))
@@ -71,9 +56,9 @@ class CharacterListFragment : Fragment() {
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 if(pos == 0)
-                    viewModel.onActionChangeSpinnerValue(20.toString())
+                    vm.onActionChangeSpinnerValue(20.toString())
                 else
-                    viewModel.onActionChangeSpinnerValue(parent.getItemAtPosition(pos).toString())
+                    vm.onActionChangeSpinnerValue(parent.getItemAtPosition(pos).toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -83,15 +68,18 @@ class CharacterListFragment : Fragment() {
 
     }
 
-    private fun onLoading(dataLoading: BaseExtraData?) {
+    /**
+     * State management functions
+     */
 
+    override fun onNormal(data: CharacterListState) {
+        mAdapter.updateList(data.characterList)
+        val list = resources.getStringArray(R.array.fragment_character_list_spinner_array)
+        binding.spFragmentListCharacter.setSelection(list.indexOf(data.limit.toString()))
+        //binding.rvFragmentListCharacter.layoutManager?.scrollToPosition(position) Volvemos al elemento que pulsamos cuando volvemos a la lista
     }
+    override fun onLoading(dataLoading: BaseExtraData?) {}
+    override fun onError(dataError: Throwable) {}
 
-    private fun onError(dataError: Throwable) {
 
-    }
-
-    private fun onNormal(characterListState: CharacterListState) {
-        mAdapter.updateList(characterListState.characterList)
-    }
 }
