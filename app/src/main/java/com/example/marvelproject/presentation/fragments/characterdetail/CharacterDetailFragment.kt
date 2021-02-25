@@ -1,16 +1,14 @@
 package com.example.marvelproject.presentation.fragments.characterdetail
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.marvelproject.R
 import com.example.marvelproject.base.BaseExtraData
 import com.example.marvelproject.base.BaseFragment
-import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.data.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -54,7 +52,9 @@ class CharacterDetailFragment : BaseFragment<CharacterDetailState, CharacterDeta
                 }
             }
             // ViewPager2
-            binding.vpCharacterDetail.adapter = CharacterDetailViewPagerAdapter(this, character)
+            binding.vpCharacterDetail.adapter = CharacterDetailViewPagerAdapter(this, character){
+                findNavController().navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment(it))
+            }
             //TabLayout
             TabLayoutMediator(binding.tabCharacterDetail, binding.vpCharacterDetail) { tab, position ->
                 tab.text = when(position) {

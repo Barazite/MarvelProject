@@ -13,14 +13,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:fontFamily="@font/nunito"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btCharacterCurriculum"
+        app:layout_constraintStart_toEndOf="@+id/btCharacterCurriculum"
+        app:layout_constraintTop_toTopOf="@+id/btCharacterCurriculum"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <Button
+        android:id="@+id/btCharacterCurriculum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:icon="@android:drawable/ic_menu_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/itemCurriculumButtonSeeText"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
