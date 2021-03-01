@@ -8,7 +8,9 @@ import androidx.navigation.fragment.navArgs
 import com.example.marvelproject.base.BaseExtraData
 import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.databinding.ComicDetailFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ComicDetailFragment: BaseFragment<ComicDetailState, ComicDetailViewModel, ComicDetailFragmentBinding>(){
 
     override val viewModelClass: Class<ComicDetailViewModel> = ComicDetailViewModel::class.java
