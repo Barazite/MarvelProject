@@ -1,15 +1,10 @@
 package com.example.marvelproject.presentation.fragments.characterdetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.base.BaseViewModel
-import com.example.marvelproject.data.MarvelRepository
-import kotlinx.coroutines.launch
+import com.example.marvelproject.domain.repository.MarvelRepository
+import javax.inject.Inject
 
-class CharacterDetailViewModel : BaseViewModel<CharacterDetailState>() {
+class CharacterDetailViewModel @Inject constructor(private val repository: MarvelRepository): BaseViewModel<CharacterDetailState>() {
 
 
     override val defaultState: CharacterDetailState = CharacterDetailState()
@@ -21,7 +16,7 @@ class CharacterDetailViewModel : BaseViewModel<CharacterDetailState>() {
     fun requestInformation(characterId: Int) {
         updateToLoadingState()
         executeCoroutines({
-            val response = MarvelRepository().getCharacter(characterId)
+            val response = repository.getCharacter(characterId)
             updateToNormalState(CharacterDetailState(response))
         },{ error ->
             updateToErrorState(error)

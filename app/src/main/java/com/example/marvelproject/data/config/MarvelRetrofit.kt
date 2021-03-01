@@ -1,46 +1,28 @@
-package com.example.marvelproject.data.network
+package com.example.marvelproject.data.config
 
 import com.example.marvelproject.BuildConfig
+import com.example.marvelproject.base.exception.NoInternetException
 import com.example.marvelproject.base.toMD5
-import com.example.marvelproject.data.model.ResponseAllCharactersDataModel
-import com.example.marvelproject.data.model.ResponseCharacterDataModel
-import com.example.marvelproject.data.model.ResponseGetComicDataModel
+import com.example.marvelproject.base.util.NetworkManager
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MarvelNetwork {
-    lateinit var service: MarvelService
+class MarvelRetrofit @Inject constructor(private val networkManager: NetworkManager){
 
-    suspend fun getAllCharacters(limit: Int): ResponseAllCharactersDataModel{
-        loadRetrofit()
-        return service.getAllCharacters(limit)
-    }
-
-    suspend fun getCharacter(characterid: Int): ResponseCharacterDataModel {
-        loadRetrofit()
-        return service.getCharacter(characterid)
-    }
-
-    suspend fun getComic(comicId: Int): ResponseGetComicDataModel {
-        loadRetrofit()
-        return service.getComic(comicId)
-    }
-
-    private fun loadRetrofit(){
-        val retrofit = Retrofit.Builder()
+    fun loadRetrofit() : Retrofit{
+        return Retrofit.Builder()
             .baseUrl("https://gateway.marvel.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(createHttpClient())
             .build()
-
-
-        service = retrofit.create(MarvelService::class.java)
     }
 
-   private fun createHttpClient(): OkHttpClient{
+    private fun createHttpClient(): OkHttpClient {
         //Create OkhttpClient
         val builder = OkHttpClient.Builder()
             .connectTimeout(90L, TimeUnit.SECONDS)
@@ -52,10 +34,18 @@ class MarvelNetwork {
         loggerInterceptor.level = if(BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         builder.addInterceptor(loggerInterceptor)
 
-        val hash = ((System.currentTimeMillis()/1000).toString() + BuildConfig.PRIVATE_KEY + BuildConfig.PUBLIC_KEY).toMD5()
+        //Check internet connectivity
+        val checkInternetConnectivityInterceptor = Interceptor{
+            if(!networkManager.isNetworkAvailable()){
+                throw NoInternetException()
+            }
+            it.proceed(it.request())
+        }
+        builder.addInterceptor(checkInternetConnectivityInterceptor)
 
         //App token
         builder.addInterceptor{ chain ->
+            val hash = ((System.currentTimeMillis()/1000).toString() + BuildConfig.PRIVATE_KEY + BuildConfig.PUBLIC_KEY).toMD5()
             var request = chain.request()
             val url = request.url.newBuilder()
                 .addQueryParameter("apikey", BuildConfig.PUBLIC_KEY)
@@ -65,8 +55,6 @@ class MarvelNetwork {
             request = request.newBuilder().url(url).build()
             chain.proceed(request)
         }
-       return builder.build()
+        return builder.build()
     }
-
-
 }

@@ -1,8 +1,8 @@
-package com.example.marvelproject.data.network
+package com.example.marvelproject.data.marvel.repository.network
 
-import com.example.marvelproject.data.model.ResponseAllCharactersDataModel
-import com.example.marvelproject.data.model.ResponseCharacterDataModel
-import com.example.marvelproject.data.model.ResponseGetComicDataModel
+import com.example.marvelproject.data.marvel.model.ResponseAllCharactersDataModel
+import com.example.marvelproject.data.marvel.model.ResponseCharacterDataModel
+import com.example.marvelproject.data.marvel.model.ResponseGetComicDataModel
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

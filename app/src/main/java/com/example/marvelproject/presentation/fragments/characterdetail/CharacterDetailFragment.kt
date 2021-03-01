@@ -9,10 +9,12 @@ import androidx.navigation.fragment.navArgs
 import com.example.marvelproject.R
 import com.example.marvelproject.base.BaseExtraData
 import com.example.marvelproject.base.BaseFragment
-import com.example.marvelproject.data.NoCharacterException
+import com.example.marvelproject.data.marvel.repository.NoCharacterException
 import com.example.marvelproject.databinding.CharacterDetailFragmentBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharacterDetailFragment : BaseFragment<CharacterDetailState, CharacterDetailViewModel, CharacterDetailFragmentBinding>() {
 
     /**

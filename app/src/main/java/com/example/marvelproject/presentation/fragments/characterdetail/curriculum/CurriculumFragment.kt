@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.marvelproject.data.model.Item
+import com.example.marvelproject.data.marvel.model.Item
 import com.example.marvelproject.databinding.FragmentCurriculumBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CurriculumFragment(val items: List<Item>, private val showButton: Boolean = false, private val myListener: (comic: String) -> Unit) : Fragment() {
 
     lateinit var binding: FragmentCurriculumBinding

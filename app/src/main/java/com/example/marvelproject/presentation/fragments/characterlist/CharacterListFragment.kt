@@ -15,8 +15,9 @@ import com.example.marvelproject.base.BaseFragment
 import com.example.marvelproject.base.BaseState
 import com.example.marvelproject.base.BaseViewState
 import com.example.marvelproject.databinding.FragmentCharacterListBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class CharacterListFragment : BaseFragment<CharacterListState, CharacterListViewModel, FragmentCharacterListBinding>() {
 
     /**

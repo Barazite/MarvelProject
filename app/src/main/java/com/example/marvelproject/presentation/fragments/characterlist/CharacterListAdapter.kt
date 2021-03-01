@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.marvelproject.R
-import com.example.marvelproject.data.model.Character
+import com.example.marvelproject.data.marvel.model.Character
 import com.example.marvelproject.databinding.ItemCharacterListBinding
 
 class CharacterListAdapter (private var myList: List<Character>, private val context: Context, private val listener: (item: Character) -> Unit) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {

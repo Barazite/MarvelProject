@@ -7,7 +7,9 @@ import androidx.fragment.app.viewModels
 import com.example.marvelproject.R
 import com.example.marvelproject.databinding.ActivityMainBinding
 import com.example.marvelproject.presentation.fragments.characterlist.CharacterListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
